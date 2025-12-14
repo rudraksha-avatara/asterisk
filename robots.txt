@@ -1,0 +1,5 @@
+# Block all web crawlers from accessing the website  
+User-agent: *  
+
+# Disallow all pages  
+Disallow: /  
