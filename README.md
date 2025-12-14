@@ -40,11 +40,9 @@ https://iiuo.org/?id=tt24060892
 
 ```
 /imdb/
-├── index.html        # Main search page
-├── style.css         # UI styling
-├── search.min.js     # Core logic
+├── index.html        # Main stream page
+├── search.html       # Custom search page
 ├── 404.html          # Custom 404 page
-├── 404.css           # 404 page styling
 ```
 
 ---
