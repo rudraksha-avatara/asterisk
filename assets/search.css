@@ -1,0 +1,273 @@
+:root {
+    --bg: #f6f7f9;
+    --white: #ffffff;
+    --dark: #111111;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --accent: #000000;
+    --radius: 14px;
+    --shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg);
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+/* ================= HEADER ================= */
+header {
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: .4px;
+}
+
+/* ================= HERO ================= */
+.hero {
+    margin: 72px auto 0;
+    padding: 0 20px 56px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    /* CTA-style bottom border */
+    background: transparent;
+}
+
+.hero h1 {
+    font-size: 34px;
+    font-weight: 800;
+}
+
+.hero p {
+    color: var(--muted);
+    margin: 14px 0 34px;
+    font-size: 16px;
+}
+
+/* ================= SEARCH ================= */
+.search-wrap {
+    display: flex;
+    gap: 14px;
+    max-width: 620px;
+    margin: auto;
+}
+
+.search-box {
+    flex: 1;
+    padding: 15px 18px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    font-size: 16px;
+    outline: none;
+    background: #fff;
+}
+
+.search-box:focus {
+    border-color: var(--dark);
+}
+
+.search-btn {
+    padding: 15px 34px;
+    border-radius: var(--radius);
+    border: 1px solid var(--dark);
+    background: var(--dark);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.search-btn:hover {
+    opacity: .9;
+}
+
+.search-btn:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+/* ================= MAIN ================= */
+main {
+    max-width: 1200px;
+    margin: auto;
+    padding: 32px 20px;
+}
+
+/* ================= GRID ================= */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 22px;
+}
+
+/* ================= CARD ================= */
+.card {
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    cursor: pointer;
+    transition: .25s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow);
+}
+
+.card img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity .4s ease;
+}
+
+.card img.loaded {
+    opacity: 1;
+}
+
+.card .info {
+    padding: 14px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* ================= SKELETON ================= */
+.skeleton {
+    height: 300px;
+    border-radius: var(--radius);
+    background: linear-gradient(90deg, #eee 25%, #ddd 37%, #eee 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -400px
+    }
+
+    100% {
+        background-position: 400px
+    }
+}
+
+/* ================= LOAD MORE ================= */
+.load-more {
+    text-align: center;
+    margin: 48px 0;
+}
+
+.load-more button {
+    padding: 14px 42px;
+    border-radius: var(--radius);
+    border: 1px solid var(--dark);
+    background: var(--dark);
+    color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.load-more button:hover {
+    opacity: .9;
+}
+
+.load-more button:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+/* ================= STATE ================= */
+.state {
+    text-align: center;
+    color: var(--muted);
+    margin: 48px 0;
+    font-size: 15px;
+}
+
+/* ================= CTA ================= */
+.cta {
+    padding: 72px 20px;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    text-align: center;
+}
+
+.cta h2 {
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.cta p {
+    color: var(--muted);
+    margin: 16px 0 28px;
+    font-size: 16px;
+}
+
+.cta a {
+    display: inline-block;
+    padding: 15px 42px;
+    border-radius: var(--radius);
+    background: var(--dark);
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* ================= FOOTER ================= */
+footer {
+    border-top: 1px solid var(--border);
+    padding: 22px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--muted);
+    background: var(--bg);
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 600px) {
+    .hero h1 {
+        font-size: 26px;
+    }
+
+    .search-wrap {
+        flex-direction: column;
+    }
+
+    header {
+        font-size: 16px;
+    }
+}
+
+/* ================= SCROLLING ================= */
+html {
+    scroll-behavior: smooth;
+}
+
+/* ================= THIN SCROLLBAR ================= */
+::-webkit-scrollbar {
+    width: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #b5b5b5;
+    border-radius: 2px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
