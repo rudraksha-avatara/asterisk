@@ -3,6 +3,8 @@ const API_PROXY = "https://omdb.jaydatt.workers.dev/";
 const CACHE_TTL = 1000 * 60 * 60 * 6; // 6 hours
 const MIN_QUERY_LEN = 2;
 const SKELETON_COUNT = 6;
+const PAGE_SIZE = 10;
+const PLACEHOLDER_IMG = "https://placehold.co/300x450?text=No+Image";
 
 /* ================= ELEMENTS ================= */
 const grid = document.getElementById("grid");
@@ -113,6 +115,7 @@ async function fetchMovies() {
 
     if (cached) {
         render(cached);
+        finalizePagination(cached);
         finishFetch();
         return;
     }
@@ -125,17 +128,41 @@ async function fetchMovies() {
         );
         const data = await res.json();
 
-        if (data?.Search?.length) {
-            setCache(key, data);
-            render(data);
-        } else {
-            if (page === 1) state.textContent = "No movies found.";
+        removeSkeletons();
+
+        if (data.Response === "False" || !data.Search?.length) {
+            if (page === 1) {
+                state.textContent = "No movies found.";
+            } else {
+                state.textContent = "No more results.";
+            }
             loadMore.hidden = true;
+            finishFetch();
+            return;
         }
+
+        setCache(key, data);
+        render(data);
+        finalizePagination(data);
+
     } catch {
         state.textContent = "Service temporarily unavailable.";
+        loadMore.hidden = true;
     } finally {
         finishFetch();
+    }
+}
+
+function finalizePagination(data) {
+    const total = Number(data.totalResults || 0);
+    const loaded = page * PAGE_SIZE;
+
+    if (data.Search.length < PAGE_SIZE || loaded >= total) {
+        loadMore.hidden = true;
+        state.textContent = "No more results.";
+    } else {
+        loadMore.hidden = false;
+        state.textContent = "";
     }
 }
 
@@ -151,8 +178,6 @@ function lockUI(lock) {
 
 /* ================= RENDER ================= */
 function render(data) {
-    removeSkeletons();
-
     const frag = document.createDocumentFragment();
 
     data.Search.forEach(movie => {
@@ -160,8 +185,10 @@ function render(data) {
         card.className = "card";
 
         card.innerHTML = `
-            <img 
-                data-src="${movie.Poster !== "N/A" ? movie.Poster : "https://placehold.co//300x450"}"
+            <img
+                data-src="${movie.Poster && movie.Poster !== "N/A"
+                ? movie.Poster
+                : PLACEHOLDER_IMG}"
                 alt="${movie.Title}"
             >
             <div class="info">${movie.Title} (${movie.Year})</div>
@@ -176,7 +203,6 @@ function render(data) {
     });
 
     grid.appendChild(frag);
-    loadMore.hidden = false;
 }
 
 /* ================= SKELETON ================= */
@@ -204,8 +230,13 @@ function initLazyImages() {
             if (!entry.isIntersecting) return;
 
             const img = entry.target;
-            img.src = img.dataset.src;
-            img.onload = () => img.classList.add("loaded");
+            img.src = img.dataset.src || PLACEHOLDER_IMG;
+
+            img.onerror = () => {
+                img.src = PLACEHOLDER_IMG;
+            };
+
+            img.classList.add("loaded");
             imageObserver.unobserve(img);
         });
     }, { rootMargin: "200px" });
@@ -230,13 +261,18 @@ function initPopular() {
                 const sk = grid.querySelector(".skeleton");
                 if (sk) sk.remove();
 
-                if (!movie?.Poster) return;
+                if (!movie?.Title) return;
 
                 const card = document.createElement("div");
                 card.className = "card";
 
                 card.innerHTML = `
-                    <img data-src="${movie.Poster}" alt="${movie.Title}">
+                    <img
+                        data-src="${movie.Poster && movie.Poster !== "N/A"
+                        ? movie.Poster
+                        : PLACEHOLDER_IMG}"
+                        alt="${movie.Title}"
+                    >
                     <div class="info">${movie.Title}</div>
                 `;
 
