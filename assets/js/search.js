@@ -22,10 +22,7 @@ let imageObserver;
 
 /* ================= POPULAR ================= */
 const popular = [
-    "RRR", "Jawan", "Pathaan", "KGF", "Pushpa", "Dangal",
-    "3 Idiots", "Inception", "Interstellar", "The Dark Knight",
-    "Avengers Endgame", "Parasite", "The Godfather",
-    "Pulp Fiction", "Forrest Gump", "The Matrix", "Gladiator", "Titanic"
+    "RRR", "Jawan", "Pathaan", "KGF", "Pushpa", "Dangal"
 ];
 
 /* ================= INIT ================= */
